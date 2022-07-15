@@ -6,8 +6,8 @@ class Rikishi:
     def __init__(self, shikona: str, rank: str, results: str, kinboshi: int) -> object:
         self.shikona = shikona
         self.rank = rank
-        self.kinboshi = kinboshi
         self.parse_results(results)
+        self.award_kinboshi(kinboshi)
 
     def parse_results(self, results):
         parse = re.match(
@@ -43,6 +43,12 @@ class Rikishi:
 
             if "K" in parse_dict["prizes"]:
                 self.sansho = self.sansho + 1
+
+    def award_kinboshi(self, kinboshi: int):
+        if self.group() in [StableGroup.M1, StableGroup.M6, StableGroup.M11]:
+            self.kinboshi = kinboshi
+        else:
+            self.kinboshi = 0
 
     def group(self) -> Enum:
         parse = re.match(r"^(?P<title>[YOSKM]{1})(?P<tier>\d{1,2})", self.rank)

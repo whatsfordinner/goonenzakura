@@ -2,7 +2,7 @@ import unittest
 from goonenzakura import rikishi
 
 
-class RikishigroupTestCase(unittest.TestCase):
+class RikishiGroupTestCase(unittest.TestCase):
     tests = [
         {"rank": "Y1e", "group": rikishi.StableGroup.YO},
         {"rank": "O1w", "group": rikishi.StableGroup.YO},
@@ -17,13 +17,30 @@ class RikishigroupTestCase(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.testRikishi = rikishi.Rikishi("", "", "0-0", 0)
+        self.testRikishi = rikishi.Rikishi("Shonenzakura", "Y1e", "0-0", 0)
 
     def test_group(self):
         for test in self.tests:
             with self.subTest(rank=test["rank"]):
                 self.testRikishi.rank = test["rank"]
                 self.assertEqual(test["group"], self.testRikishi.group())
+
+
+class RikishiKinboshiTestCase(unittest.TestCase):
+    tests = [
+        {"rank": "M3e", "yokozuna_defeated": 2, "kinboshi": 2},
+        {"rank": "S2w", "yokozuna_defeated": 1, "kinboshi": 0},
+    ]
+
+    def setUp(self):
+        self.testRikishi = rikishi.Rikishi("Shonenzakura", "Y1e", "0-0", 0)
+
+    def test_kinboshi(self):
+        for test in self.tests:
+            with self.subTest(rank=test["rank"]):
+                self.testRikishi.rank = test["rank"]
+                self.testRikishi.award_kinboshi(test["yokozuna_defeated"])
+                self.assertEqual(test["kinboshi"], self.testRikishi.kinboshi)
 
 
 class RikishiPickableTestCase(unittest.TestCase):
@@ -34,7 +51,7 @@ class RikishiPickableTestCase(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.testRikishi = rikishi.Rikishi("", "", "0-0", 0)
+        self.testRikishi = rikishi.Rikishi("Shonenzakura", "Y1e", "0-0", 0)
 
     def test_pickable(self):
         for test in self.tests:
@@ -111,7 +128,7 @@ class RikishiParseResultsTestCase(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.testRikishi = rikishi.Rikishi("", "", "0-0", 0)
+        self.testRikishi = rikishi.Rikishi("Shonenzakura", "Y1e", "0-0", 0)
 
     def test_parse_results(self):
         for test in self.tests:
@@ -134,7 +151,7 @@ class RikishiPointsTestCase(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.testRikishi = rikishi.Rikishi("", "", "0-0", 0)
+        self.testRikishi = rikishi.Rikishi("Shonenzakura", "Y1e", "0-0", 0)
 
     def test_score(self):
         for test in self.tests:
