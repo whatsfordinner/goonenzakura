@@ -3,14 +3,15 @@ from enum import Enum
 
 
 class Rikishi:
-    def __init__(self, shikona, rank, results) -> object:
+    def __init__(self, shikona: str, rank: str, results: str, kinboshi: int) -> object:
         self.shikona = shikona
         self.rank = rank
+        self.kinboshi = kinboshi
         self.parse_results(results)
 
     def parse_results(self, results):
         parse = re.match(
-            r"^(?P<wins>\d{1,2})-(?P<losses>\d{1,2})(?:-(?P<kyujo>\d{1,2}))?(?P<prizes>\s[YJGSK]+)?$",
+            r"^(?P<wins>\d{1,2})-(?P<losses>\d{1,2})(?:-(?P<kyujo>\d{1,2}))?(?P<prizes>\s[YJDGSK]+)?$",
             results,
         )
         parse_dict = parse.groupdict()
@@ -64,8 +65,23 @@ class Rikishi:
     def pickable(self) -> bool:
         return self.kyujo < 15
 
-    def score(self) -> int:
-        pass
+    def points(self) -> float:
+        points = self.wins
+        points += self.kinboshi * 2
+        points += self.sansho * 3
+
+        if self.wins >= 8:
+            points += 1
+        else:
+            points -= 0.5
+
+        if self.yusho:
+            points += 5
+
+        if self.junyusho:
+            points += 3
+
+        return points
 
 
 class StableGroup(Enum):

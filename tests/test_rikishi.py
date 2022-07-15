@@ -17,7 +17,7 @@ class RikishigroupTestCase(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.testRikishi = rikishi.Rikishi("", "", "0-0")
+        self.testRikishi = rikishi.Rikishi("", "", "0-0", 0)
 
     def test_group(self):
         for test in self.tests:
@@ -34,7 +34,7 @@ class RikishiPickableTestCase(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.testRikishi = rikishi.Rikishi("", "", "0-0")
+        self.testRikishi = rikishi.Rikishi("", "", "0-0", 0)
 
     def test_pickable(self):
         for test in self.tests:
@@ -111,7 +111,7 @@ class RikishiParseResultsTestCase(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.testRikishi = rikishi.Rikishi("", "", "0-0")
+        self.testRikishi = rikishi.Rikishi("", "", "0-0", 0)
 
     def test_parse_results(self):
         for test in self.tests:
@@ -123,3 +123,24 @@ class RikishiParseResultsTestCase(unittest.TestCase):
                 self.assertEqual(test["yusho"], self.testRikishi.yusho)
                 self.assertEqual(test["junyusho"], self.testRikishi.junyusho)
                 self.assertEqual(test["sansho"], self.testRikishi.sansho)
+
+
+class RikishiPointsTestCase(unittest.TestCase):
+    tests = [
+        {"result": "12-3", "kinboshi": 0, "points": 13},
+        {"result": "7-8", "kinboshi": 1, "points": 8.5},
+        {"result": "11-1-3 J", "kinboshi": 0, "points": 15},
+        {"result": "14-1 YGS", "kinboshi": 2, "points": 30},
+    ]
+
+    def setUp(self):
+        self.testRikishi = rikishi.Rikishi("", "", "0-0", 0)
+
+    def test_score(self):
+        for test in self.tests:
+            with self.subTest(
+                result=test["result"], kinboshi=test["kinboshi"], points=test["points"]
+            ):
+                self.testRikishi.parse_results(test["result"])
+                self.testRikishi.kinboshi = test["kinboshi"]
+                self.assertEqual(test["points"], self.testRikishi.points())
