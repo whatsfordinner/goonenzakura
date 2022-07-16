@@ -1,2 +1,0 @@
-import rikishi
-import sumodb

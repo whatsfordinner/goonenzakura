@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import rikishi
+from goonenzakura import rikishi
 
 
 def get_basho_stats(year: int, month: int) -> list:
