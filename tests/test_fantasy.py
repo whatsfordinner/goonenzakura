@@ -50,3 +50,128 @@ Total: 67.5
         self.testPicks.picks = self.picks
         self.testPicks.calculate_points()
         self.assertEqual(self.string, self.testPicks.to_string())
+
+
+class FantasyBanzukePerGroupTestCase(unittest.TestCase):
+    test_roster = [
+        rikishi.Rikishi("Hakuho", "Y1e", "15-0 Y", 0),
+        rikishi.Rikishi("Shodai", "O1w", "7-8", 0),
+        rikishi.Rikishi("Wakatakakage", "S1e", "13-2 JG", 0),
+        rikishi.Rikishi("Hoshoryu", "K1e", "9-6", 0),
+        rikishi.Rikishi("Ura", "M2w", "10-3-2 S", 1),
+        rikishi.Rikishi("Kiribayama", "M3e", "6-9", 0),
+        rikishi.Rikishi("Tochinoshin", "M6e", "12-3 K", 1),
+        rikishi.Rikishi("Chiyoshoma", "M8e", "8-7", 0),
+        rikishi.Rikishi("Midorifuji", "M13w", "8-7", 0),
+        rikishi.Rikishi("Tokushoryu", "M15e", "5-10", 0),
+    ]
+
+    def setUp(self):
+        self.fantasyBanzuke = fantasy.FantasyBanzuke(self.test_roster)
+
+    def test_find_highest_points(self):
+        tests = [
+            {
+                "group": rikishi.StableGroup.YO,
+                "shikona": "Hakuho",
+            },
+            {
+                "group": rikishi.StableGroup.SK,
+                "shikona": "Wakatakakage",
+            },
+            {
+                "group": rikishi.StableGroup.M1,
+                "shikona": "Ura",
+            },
+            {
+                "group": rikishi.StableGroup.M6,
+                "shikona": "Tochinoshin",
+            },
+            {
+                "group": rikishi.StableGroup.M11,
+                "shikona": "Midorifuji",
+            },
+        ]
+
+        for test in tests:
+            with self.subTest(group=test["group"]):
+                self.assertEqual(
+                    test["shikona"],
+                    self.fantasyBanzuke.find_highest_points(test["group"]).shikona,
+                )
+
+    def test_find_lowest_points(self):
+        tests = [
+            {
+                "group": rikishi.StableGroup.YO,
+                "shikona": "Shodai",
+            },
+            {
+                "group": rikishi.StableGroup.SK,
+                "shikona": "Hoshoryu",
+            },
+            {
+                "group": rikishi.StableGroup.M1,
+                "shikona": "Kiribayama",
+            },
+            {
+                "group": rikishi.StableGroup.M6,
+                "shikona": "Chiyoshoma",
+            },
+            {
+                "group": rikishi.StableGroup.M11,
+                "shikona": "Tokushoryu",
+            },
+        ]
+
+        for test in tests:
+            with self.subTest(group=test["group"]):
+                self.assertEqual(
+                    test["shikona"],
+                    self.fantasyBanzuke.find_lowest_points(test["group"]).shikona,
+                )
+
+
+class FantasyBanzukePicksTestCase(unittest.TestCase):
+    test_roster = [
+        rikishi.Rikishi("Hakuho", "Y1e", "15-0 Y", 0),
+        rikishi.Rikishi("Kakuryu", "Y1w", "0-0-15", 0),
+        rikishi.Rikishi("Shodai", "O1w", "7-8", 0),
+        rikishi.Rikishi("Wakatakakage", "S1e", "13-2 JG", 0),
+        rikishi.Rikishi("Hoshoryu", "K1e", "9-6", 0),
+        rikishi.Rikishi("Ura", "M2w", "10-3-2 S", 1),
+        rikishi.Rikishi("Kiribayama", "M3e", "6-9", 0),
+        rikishi.Rikishi("Chiyoshoma", "M8e", "8-7", 0),
+        rikishi.Rikishi("Tochinoshin", "M6e", "12-3 K", 1),
+        rikishi.Rikishi("Midorifuji", "M13w", "8-7", 0),
+        rikishi.Rikishi("Tokushoryu", "M15e", "5-10", 0),
+    ]
+
+    def setUp(self):
+        self.fantasyBanzuke = fantasy.FantasyBanzuke(self.test_roster)
+
+    def test_calculate_best(self):
+        test = {
+            rikishi.StableGroup.YO: "Hakuho",
+            rikishi.StableGroup.SK: "Wakatakakage",
+            rikishi.StableGroup.M1: "Ura",
+            rikishi.StableGroup.M6: "Tochinoshin",
+            rikishi.StableGroup.M11: "Midorifuji",
+        }
+
+        for group in test:
+            self.assertEqual(test[group], self.fantasyBanzuke.best.picks[group].shikona)
+
+    def test_calculate_worst(self):
+        test = {
+            rikishi.StableGroup.YO: "Shodai",
+            rikishi.StableGroup.SK: "Hoshoryu",
+            rikishi.StableGroup.M1: "Kiribayama",
+            rikishi.StableGroup.M6: "Chiyoshoma",
+            rikishi.StableGroup.M11: "Tokushoryu",
+        }
+
+        for group in test:
+            self.assertEqual(
+                test[group], self.fantasyBanzuke.worst.picks[group].shikona
+            )
