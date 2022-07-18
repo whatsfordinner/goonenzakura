@@ -11,7 +11,7 @@ class Rikishi:
 
     def parse_results(self, results):
         parse = re.match(
-            r"^(?P<wins>\d{1,2})-(?P<losses>\d{1,2})(?:-(?P<kyujo>\d{1,2}))?(?P<prizes>\s[YJDGSK]+)?$",
+            r"^(?P<wins>\d{1,2})-(?P<losses>\d{1,2})(?:-(?P<kyujo>\d{1,2}))?(?:d)?(?P<prizes>\s[YJDGSK]+)?$",
             results,
         )
         parse_dict = parse.groupdict()
@@ -88,6 +88,20 @@ class Rikishi:
             points += 3
 
         return points
+
+    def to_dict(self):
+        return {
+            "shikona": self.shikona,
+            "rank": self.rank,
+            "wins": self.wins,
+            "losses": self.losses,
+            "kyujo": self.kyujo,
+            "sansho": self.sansho,
+            "yusho": self.yusho,
+            "junyusho": self.junyusho,
+            "kinboshi": self.kinboshi,
+            "points": self.points(),
+        }
 
 
 class StableGroup(Enum):

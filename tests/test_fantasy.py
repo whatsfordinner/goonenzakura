@@ -67,7 +67,7 @@ class FantasyBanzukePerGroupTestCase(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.fantasyBanzuke = fantasy.FantasyBanzuke(self.test_roster)
+        self.fantasy_banzuke = fantasy.FantasyBanzuke(self.test_roster)
 
     def test_find_highest_points(self):
         tests = [
@@ -97,7 +97,7 @@ class FantasyBanzukePerGroupTestCase(unittest.TestCase):
             with self.subTest(group=test["group"]):
                 self.assertEqual(
                     test["shikona"],
-                    self.fantasyBanzuke.find_highest_points(test["group"]).shikona,
+                    self.fantasy_banzuke.find_highest_points(test["group"]).shikona,
                 )
 
     def test_find_lowest_points(self):
@@ -128,7 +128,7 @@ class FantasyBanzukePerGroupTestCase(unittest.TestCase):
             with self.subTest(group=test["group"]):
                 self.assertEqual(
                     test["shikona"],
-                    self.fantasyBanzuke.find_lowest_points(test["group"]).shikona,
+                    self.fantasy_banzuke.find_lowest_points(test["group"]).shikona,
                 )
 
 
@@ -148,7 +148,7 @@ class FantasyBanzukePicksTestCase(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.fantasyBanzuke = fantasy.FantasyBanzuke(self.test_roster)
+        self.fantasy_banzuke = fantasy.FantasyBanzuke(self.test_roster)
 
     def test_calculate_best(self):
         test = {
@@ -160,7 +160,9 @@ class FantasyBanzukePicksTestCase(unittest.TestCase):
         }
 
         for group in test:
-            self.assertEqual(test[group], self.fantasyBanzuke.best.picks[group].shikona)
+            self.assertEqual(
+                test[group], self.fantasy_banzuke.best.picks[group].shikona
+            )
 
     def test_calculate_worst(self):
         test = {
@@ -173,5 +175,5 @@ class FantasyBanzukePicksTestCase(unittest.TestCase):
 
         for group in test:
             self.assertEqual(
-                test[group], self.fantasyBanzuke.worst.picks[group].shikona
+                test[group], self.fantasy_banzuke.worst.picks[group].shikona
             )

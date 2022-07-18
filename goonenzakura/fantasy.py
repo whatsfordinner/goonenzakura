@@ -52,6 +52,17 @@ class FantasyBanzuke:
 
         return candidate
 
+    def results_to_dict(self):
+        results = []
+        best_results = self.best.to_dict()
+        best_results["type"] = "best"
+        worst_results = self.worst.to_dict()
+        worst_results["type"] = "worst"
+        results.append(best_results)
+        results.append(worst_results)
+
+        return results
+
 
 class FantasyPicks:
     def __init__(self):
@@ -72,3 +83,13 @@ M11+: {self.picks[rikishi.StableGroup.M11].shikona}
 
 Total: {self.points}
 """
+
+    def to_dict(self):
+        return {
+            "points": self.points,
+            "yo": self.picks[rikishi.StableGroup.YO].to_dict(),
+            "sk": self.picks[rikishi.StableGroup.SK].to_dict(),
+            "m1m5": self.picks[rikishi.StableGroup.M1].to_dict(),
+            "m6m10": self.picks[rikishi.StableGroup.M6].to_dict(),
+            "m11": self.picks[rikishi.StableGroup.M11].to_dict(),
+        }
