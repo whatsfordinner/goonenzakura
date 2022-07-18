@@ -4,8 +4,8 @@ from goonenzakura import rikishi
 class FantasyBanzuke:
     def __init__(self, competitors: list):
         self.banzuke = {}
-        self.goonenzakura = FantasyPicks()
-        self.hakgoonho = FantasyPicks()
+        self.worst = FantasyPicks()
+        self.best = FantasyPicks()
 
         for group in rikishi.StableGroup:
             self.banzuke[group] = []
@@ -13,20 +13,20 @@ class FantasyBanzuke:
         for competitor in competitors:
             self.banzuke[competitor.group()].append(competitor)
 
-        self.calculate_goonenzakura()
-        self.calculate_hakgoonho()
+        self.calculate_worst()
+        self.calculate_best()
 
-    def calculate_goonenzakura(self):
+    def calculate_worst(self):
         for group in rikishi.StableGroup:
-            self.goonenzakura.picks[group] = self.find_lowest_points(group)
+            self.worst.picks[group] = self.find_lowest_points(group)
 
-        self.goonenzakura.calculate_points()
+        self.worst.calculate_points()
 
-    def calculate_hakgoonho(self):
+    def calculate_best(self):
         for group in rikishi.StableGroup:
-            self.hakgoonho.picks[group] = self.find_highest_points(group)
+            self.best.picks[group] = self.find_highest_points(group)
 
-        self.hakgoonho.calculate_points()
+        self.best.calculate_points()
 
     def find_lowest_points(self, group):
         candidate = None
